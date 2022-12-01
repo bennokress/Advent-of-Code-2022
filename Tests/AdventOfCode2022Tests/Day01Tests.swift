@@ -24,8 +24,8 @@ final class Day01Tests: XCTestCase {
         let solver = Solver01()
         solver.solve(using: input)
         
-        XCTAssertEqual(solver.solutionPart1, String(24_000))
-        XCTAssertEqual(solver.solutionPart1, String(45_000))
+        XCTAssertEqual(solver.answer1, 24_000)
+        XCTAssertEqual(solver.answer2, 45_000)
     }
     
 }

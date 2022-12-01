@@ -12,8 +12,11 @@ let package = Package(
     products: [
         .library(name: "AdventOfCode2022", targets: ["AdventOfCode2022"])
     ],
+    dependencies: [
+        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
+    ],
     targets: [
-        .target(name: "AdventOfCode2022", dependencies: []),
+        .target(name: "AdventOfCode2022", dependencies: [.product(name: "Algorithms", package: "swift-algorithms")]),
         .testTarget(name: "AdventOfCode2022Tests", dependencies: ["AdventOfCode2022"])
     ]
 )
