@@ -7,21 +7,30 @@ import Foundation
 
 public class Solver04 {
     
+    var cleaningAssignmentPairs: [CleaningAssignmentPair] = []
+    
     init() { }
     
-    /// Instructions what to do with the input
     func parseStuff(from input: String) {
-        print(input)
+        let inputEntries = input.components(separatedBy: .newlines)
+        for entry in inputEntries {
+            addCleaningAssignmentPair(with: entry, to: &cleaningAssignmentPairs)
+        }
     }
     
-    /// Answer 1 Description
+    /// The amount of assignment pairs where one assignment is fully contained in the other
     var answer1: Int {
-        0
+        cleaningAssignmentPairs.filter(\.hasFullyContainedAssignment).count
     }
     
-    /// Answer 2 Description
+    /// The amount of assignment pairs where one assignment contains parts of the other
     var answer2: Int {
-        0
+        cleaningAssignmentPairs.filter(\.areOverlapping).count
+    }
+    
+    private func addCleaningAssignmentPair(with assignment: String, to cleaningAssignmentPairs: inout [CleaningAssignmentPair]) {
+        let cleaningAssignmentPair = CleaningAssignmentPair(with: assignment)
+        cleaningAssignmentPairs.append(cleaningAssignmentPair)
     }
     
 }
@@ -53,4 +62,20 @@ extension Solver04: CustomStringConvertible {
 
 // MARK: - Supporting Types
 
-// Add whatever you need
+struct CleaningAssignmentPair {
+    
+    let assignment1: ClosedRange<Int>
+    let assignment2: ClosedRange<Int>
+    
+    init(with assignments: String) {
+        let splitAssignments = assignments.split(separator: ",")
+        let assignment1Boundaries = splitAssignments.first!.split(separator: "-").map { Int($0)! }
+        let assignment2Boundaries = splitAssignments.last!.split(separator: "-").map { Int($0)! }
+        self.assignment1 = assignment1Boundaries.first! ... assignment1Boundaries.last!
+        self.assignment2 = assignment2Boundaries.first! ... assignment2Boundaries.last!
+    }
+    
+    var hasFullyContainedAssignment: Bool { assignment1.contains(assignment2) || assignment2.contains(assignment1) }
+    var areOverlapping: Bool { assignment1.overlaps(assignment2) || assignment2.overlaps(assignment1) }
+    
+}
