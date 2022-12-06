@@ -7,21 +7,50 @@ import Foundation
 
 public class Solver06 {
     
+    private var possibleMarkers: [String] = []
+    private var possibleMessages: [String] = []
+    
     init() { }
     
-    /// Instructions what to do with the input
     func parseStuff(from input: String) {
-        print(input)
+        self.possibleMarkers = input.windows(ofCount: 4).enumerated().map { "\($1)\($0 + 4)" } // +4 to the index gives us the character at which the marker is complete
+        self.possibleMessages = input.windows(ofCount: 14).enumerated().map { "\($1)\($0 + 14)" } // +14 to the index gives us the character at which the message is complete
     }
     
-    /// Answer 1 Description
+    /// This is the first index (1-based) of the last character of a marker which is defined as 4 characters without a duplicate
     var answer1: Int {
-        0
+        firstMarkerIndex
     }
     
-    /// Answer 2 Description
+    /// This is the first index (1-based) of the last character of a message which is defined as 14 characters without a duplicate
     var answer2: Int {
-        0
+        firstMessageIndex
+    }
+    
+    private var firstMarkerIndex: Int {
+        let culo = possibleMarkers
+            .filter { isMarker($0) }
+            .first!
+            .dropFirst(4)
+        return Int(String(culo))!
+    }
+    
+    private func isMarker(_ possibleMarker: String) -> Bool {
+        let chunk = possibleMarker.chunks(ofCount: 4).first!
+        return Set(chunk).count == 4
+    }
+    
+    private var firstMessageIndex: Int {
+        let culo = possibleMessages
+            .filter { isMessage($0) }
+            .first!
+            .dropFirst(14)
+        return Int(String(culo))!
+    }
+    
+    private func isMessage(_ possibleMessage: String) -> Bool {
+        let chunk = possibleMessage.chunks(ofCount: 14).first!
+        return Set(chunk).count == 14
     }
     
 }
@@ -50,7 +79,3 @@ extension Solver06: CustomStringConvertible {
     private var descriptionTitle: String { "✼*✻*✼*✻* Day 06 *✻*✼*✻*✼" }
     
 }
-
-// MARK: - Supporting Types
-
-// Add whatever you need
