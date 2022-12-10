@@ -31,7 +31,6 @@ public class Solver07 {
             act(on: .stepOut, in: &currentFolder, with: &parentFolders)
         }
         rootFolder = currentFolder
-        print(rootFolder.size)
     }
     
     /// The combined size of all folders on disk that have a maximum size of 100000
